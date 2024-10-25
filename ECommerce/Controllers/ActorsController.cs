@@ -51,6 +51,7 @@ public class ActorsController : Controller
     {
         return View();
     }
+
     [HttpPost]
     public async Task<IActionResult> EditAsync(Actor actor) // burası odev olarak verıldı edit kısmı olacak 
     {
