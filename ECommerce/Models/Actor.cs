@@ -25,4 +25,5 @@ public class Actor
     //RelationShip
     [ValidateNever]// tabloya ınsert ettıgınde actor-movıes atla demektir..
     public List<Actor_Movie> Actors_Movies  { get; set;}
+    void metot15() { }
 }
