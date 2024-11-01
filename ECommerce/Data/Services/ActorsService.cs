@@ -1,4 +1,5 @@
-﻿using ECommerce.Models;
+﻿using ECommerce.Data.Base;
+using ECommerce.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Data.Services;
@@ -6,7 +7,6 @@ namespace ECommerce.Data.Services;
 public class ActorsService : IActorsService//bu class dbcontext e bağımlı
 {
     readonly AppDbContext _context;
-
     public ActorsService(AppDbContext context)//dependency inversion
     {
         _context = context;
@@ -14,20 +14,12 @@ public class ActorsService : IActorsService//bu class dbcontext e bağımlı
 
     public async Task AddAsync(Actor actor)// Tamamen asenkron yapıya döndü..
     {
-        await _context.Actors.AddAsync(actor);
+        _context.Actors.AddAsync(actor);
         await _context.SaveChangesAsync();
 
     }
 
-    public void Delete(int id)
-    {
-        Actor actor = _context.Actors.FirstOrDefault(x => x.Id == id);
-        if (actor != null)
-        {
-            _context.Actors.Remove(actor);
-            _context.SaveChanges();
-        }
-    }
+
 
     public async Task<IEnumerable<Actor>> GetAllAsync()
     {
@@ -37,7 +29,7 @@ public class ActorsService : IActorsService//bu class dbcontext e bağımlı
     public async Task<Actor> GetByIdAsync(int id)
     {
         Actor actor = await _context.Actors.FirstOrDefaultAsync(a => a.Id == id); // Tamamen asenkron yapıya döndü..
-        if (actor != null)
+        if (actor is not null)
         {
             return actor;
         }
@@ -49,5 +41,15 @@ public class ActorsService : IActorsService//bu class dbcontext e bağımlı
         _context.Actors.Update(newActor);
         await _context.SaveChangesAsync();
         return newActor;
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        Actor actor =await _context.Actors.FirstOrDefaultAsync(x => x.Id == id);
+        if (actor != null)
+        {
+            _context.Actors.Remove(actor);
+            await _context.SaveChangesAsync();
+        }
     }
 }

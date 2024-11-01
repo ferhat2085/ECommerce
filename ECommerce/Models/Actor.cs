@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using ECommerce.Data.Base;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.Models;
 
-public class Actor
+public class Actor:IEntityBase
 {
     [Key]
     public int Id { get; set; }
