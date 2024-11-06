@@ -23,6 +23,7 @@ public class AppDbContext : DbContext // dbContext sistemede gomülü olarak bul
             ma.ActorId,
             ma.MovieId
         });
+
         modelBuilder.Entity<Actor_Movie>()
             .HasOne(m => m.Movie)
             .WithMany(ma => ma.Actors_Movies)

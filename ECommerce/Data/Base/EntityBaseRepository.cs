@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ECommerce.Data.Base;
 
@@ -22,11 +23,22 @@ public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class,
         var entity = await GetByIdAsync(id);
         EntityEntry entityEntry = _context.Entry<T>(entity);
         entityEntry.State = EntityState.Deleted;
+        await _context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
+    }
+
+    public async  Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] inculudeProperties)
+    {
+        IQueryable<T> query = _context.Set<T>();
+        query = inculudeProperties
+            .Aggregate(query, (current, inculudeProperty) => current.Include(inculudeProperty));// ilişkili olan tabloları bırletırır 
+        return await query.ToListAsync();  
+
+
     }
 
     public async Task<T> GetByIdAsync(int id)
@@ -38,6 +50,7 @@ public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class,
     {
         EntityEntry entityEntry = _context.Entry<T>(entity);
         entityEntry.State = EntityState.Modified;
+        await _context.SaveChangesAsync();
     }
 }
 

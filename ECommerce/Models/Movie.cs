@@ -1,11 +1,12 @@
 ﻿using ECommerce.Data;
+using ECommerce.Data.Base;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models;
 
-public class Movie
+public class Movie : IEntityBase
 {
     [Key]
     public int Id { get; set; }
@@ -30,19 +31,28 @@ public class Movie
 
 
     public MovieCategory MovieCategory { get; set; }
+    public int CinemaId { get; set; }
 
+    [ForeignKey("ProducerId")]
+    public int ProducerId { get; set; }
+
+    
+    
+    
+    
     //RelationShip
+
+
     [ValidateNever]
     public List<Actor_Movie> Actors_Movies { get; set; }
 
-    [ForeignKey("CinemaId")]
-    [ValidateNever]
-    public int CinemaId { get; set; }
+    
+    
     [ValidateNever]
     public Cinema Cinema { get; set; }
-    [ForeignKey("ProducerId")]
+
+
+
     [ValidateNever]
-    public int ProducerId { get; set; }
-    [ValidateNever]
-    public Producer Producer { get; }
+    public Producer Producer { get; set; }
 }

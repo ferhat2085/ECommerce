@@ -4,8 +4,9 @@ using ECommerce.Models;
 namespace ECommerce.Data.Services;
 
 //CRUD operation Create, Read Update Delete 
-public interface IActorsService:IEntityBaseRepository<Actor>
+public interface IProducersService : IEntityBaseRepository<Producer>
 {
 
-   
+
 }
+

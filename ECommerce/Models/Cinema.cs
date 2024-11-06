@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using ECommerce.Data.Base;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.Models;
 
-public class Cinema
+public class Cinema: IEntityBase
 {
     [Key]
     public int Id { get; set; }

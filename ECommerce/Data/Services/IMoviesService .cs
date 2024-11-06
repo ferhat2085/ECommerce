@@ -4,8 +4,8 @@ using ECommerce.Models;
 namespace ECommerce.Data.Services;
 
 //CRUD operation Create, Read Update Delete 
-public interface IActorsService:IEntityBaseRepository<Actor>
+public interface IMoviesService:IEntityBaseRepository<Movie>
 {
-
-   
+    Task<Movie> GetMoviesByIdAsync(int id);
+  
 }
