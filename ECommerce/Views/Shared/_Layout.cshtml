@@ -3,71 +3,89 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - E-Commerce</title>
+    <title>@ViewData["Title"] - ETicaret</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ECommerce.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    ,
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header style="margin-top:-20px;">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Movies" asp-action="Index">E-Film</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expended="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-
-                        <li class="navbar-nav flex-grow-1">
-                            <a class="nav-link" text-dark asp-controller="Movies" asp-action="Index">
-                                <i class="badge-info bi-film">
-                                    Filmler
-                                </i>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Movies" asp-action="Index">
+                                <i class="badge-info bi-film"></i>
+                                Filmler
                             </a>
                         </li>
-
                         <li class="nav-item dropdown">
-
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expended="false">
-                                <i class="bi bi-gear">Yönetim </i>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear"></i> Yönetim
                             </a>
-
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" asp-controller="Cinemas" asp-action="Index">
-                                    <i class="bi bi-camera-reels">Sinemalar</i>
+                                    <i class="bi bi-camera-reels"></i> Sinemalar
                                 </a>
                                 <a class="dropdown-item" asp-controller="Producers" asp-action="Index">
-                                    <i class="bi bi-camera- bi-headset">Prodüktörler</i>
+                                    <i class="bi bi-headset"></i> Prodüktörler
                                 </a>
                                 <a class="dropdown-item" asp-controller="Actors" asp-action="Index">
-                                    <i class="bi bi-person-square ">Aktörler</i>
+                                    <i class="bi bi-person-square"></i> Aktörler
                                 </a>
                             </div>
-
                         </li>
                     </ul>
-
-                    <form class="form-inline" style="display: flex; align-items: center; padding-right:15px;" asp-controller="Movies" asp-action="Filter">
-                        <div class="input-group">
-                            <input name="searchString" type="text" class="form-control" placeholder="bir film arayın..." />
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                                <i class=" bi-search"></i>
-                            </button>
-                        </div>
-
+                    <form class="form-inline my-1 my-lg-0" style="padding-right:15px;" asp-controller="Movies" asp-action="Filter">
+                        <input name="searchString" type="text" class="form-control d-inline w-75" placeholder="Bir film arayın..." />
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </form>
+
+                    <ul class="navbar-nav">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </ul>
+
+                    <a class="btn btn-outline-success my-2 my-sm-0"
+                    asp-controller="Accounts" asp-action="Login">
+                    <i class=" bi bi-box-arrow-in-right"></i>
+                    Giriş yap 
+                    </a>
+
+                    <div class="dropdown">
+                        <button class="btn btn-outline-success dropdown-toggle"
+                                type="button" id="profile-btn" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <i class="bi bi-person-badge"></i>Merhaba kullanıcı
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="profile-btn">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
+                                    <i class="bi bi-list"></i> Siparişlerim
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
 
                 </div>
             </div>
         </nav>
+
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
+
         </main>
     </div>
 
@@ -82,4 +100,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-

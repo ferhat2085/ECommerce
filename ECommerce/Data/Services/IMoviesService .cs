@@ -1,11 +1,17 @@
 ﻿using ECommerce.Data.Base;
 using ECommerce.Models;
+using ECommerce.ViewModels;
 
 namespace ECommerce.Data.Services;
 
-//CRUD operation Create, Read Update Delete 
-public interface IMoviesService:IEntityBaseRepository<Movie>
+public interface IMoviesService : IEntityBaseRepository<Movie>
+
+
 {
-    Task<Movie> GetMoviesByIdAsync(int id);
-  
+    Task<Movie> GetMovieByIdAsync(int id);
+
+    Task<MovieDropdowns> GetMovieDropdownsValuesAsync();
+
+    Task AddMovieAsync(MovieVM movie);
+    Task UpdateMovieAsync(MovieVM movie);
 }

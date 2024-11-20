@@ -1,12 +1,16 @@
-﻿using ECommerce.Data;
+﻿using ECommerce.Data.Static;
+using ECommerce.Data;
 using ECommerce.Models;
+using Microsoft.AspNetCore.Identity;
+
+namespace Ecommerce.Data;
 
 public class AppDbInitializer
 {
     public static void Seed(IApplicationBuilder applicationBuilder)
     {
         using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
-        {     
+        {
             var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
 
             context.Database.EnsureCreated();
@@ -49,6 +53,8 @@ public class AppDbInitializer
                     });
                 context.SaveChanges();
             }
+
+
             //Actors
             if (!context.Actors.Any())
             {
@@ -88,6 +94,8 @@ public class AppDbInitializer
                     });
                 context.SaveChanges();
             }
+
+
             //Producers
             if (!context.Producers.Any())
             {
@@ -127,6 +135,8 @@ public class AppDbInitializer
                     });
                 context.SaveChanges();
             }
+
+
             //Movies
             if (!context.Movies.Any())
             {
@@ -207,6 +217,8 @@ public class AppDbInitializer
                     });
                 context.SaveChanges();
             }
+
+
             //Actors & Movies
             if (!context.Actors_Movies.Any())
             {
@@ -312,6 +324,57 @@ public class AppDbInitializer
 
     }
 
+    public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
+    {
+        using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+        {
+            //roles
+            var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+            if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
 
+            if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+            //users
+            var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            //admin
+            string adminUserEmail = "admin@ecommerce.com";
+            var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
+
+            if (adminUser is null)
+            {
+                var newAdminUser = new ApplicationUser()
+                {
+                    FullName = "Admin User",
+                    UserName = "app-admin",
+                    Email = adminUserEmail,
+                    EmailConfirmed = true,
+                };
+
+                IdentityResult result = await userManager.CreateAsync(newAdminUser, "Coding@1234");
+                await userManager.AddToRolesAsync(newAdminUser, [UserRoles.Admin]);
+            }
+
+            //user
+            string appUserEmail = "user@ecommerce.com";
+            var appUser = await userManager.FindByEmailAsync(adminUserEmail);
+
+            if (appUser is null)
+            {
+                var newAppUser = new ApplicationUser()
+                {
+                    FullName = "Application User",
+                    UserName = "app-user",
+                    Email = appUserEmail,
+                    EmailConfirmed = true,
+                };
+
+                await userManager.CreateAsync(newAppUser, "Coding@1234");
+                await userManager.AddToRolesAsync(newAppUser, [UserRoles.User]);
+            }
+        }
+    }
 }
